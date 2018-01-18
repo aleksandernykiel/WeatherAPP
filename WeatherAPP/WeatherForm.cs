@@ -18,7 +18,6 @@ namespace WeatherAPP
         public WeatherForm()
         {
             InitializeComponent();
-            this.Paint += cityComboBox_SelectedIndexChanged;
             LoadCities();
         }
 
@@ -77,27 +76,52 @@ namespace WeatherAPP
 
         private void cityComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
+            this.SuspendLayout();
             City city = (City)cityComboBox.SelectedItem;
-            Config.Instance.SelectedCity = city.ID;
-            Config.SaveAsync();
 
-            OpenWeatherMapClient client = new OpenWeatherMapClient();
+            if (city.ID != Config.Instance.SelectedCity)
+            {
+                Config.Instance.SelectedCity = city.ID;
+                Config.SaveAsync();
+
+                RedrawWeatherPanel(sender, e);
+            }
+
+            this.ResumeLayout();
+        }
+
+        private void RedrawWeatherPanel(object sender, EventArgs e)
+        {
+            City city = (City)cityComboBox.SelectedItem;
 
             var g = weatherPanel.CreateGraphics();
             g.Clear(this.BackColor);
-            FontFamily family = new FontFamily("Arial");
-            SolidBrush brush = new SolidBrush(Color.Black);
+            
 
             WeatherData data = Newtonsoft.Json.JsonConvert.DeserializeObject<WeatherData>(city.LastWeatherJSON);
             string info = city.Name;
             if (!String.IsNullOrEmpty(data.sys.country))
                 info += ", " + data.sys.country;
 
-            g.DrawString(info , new Font(family, 16, FontStyle.Regular), brush, 5, 5 );
-            Stream icon = client.GetIcon(data.weather[0].icon).Result;
-            Image img = Bitmap.FromStream(icon);
-            Rectangle rct = new Rectangle(weatherPanel.Width - 100, 5, 95, 95);
-            g.DrawImage(img, rct);
+            g.DrawString(info, 16, 5, 5);
+            g.DrawString(String.Format("{0}{1}","min:  ", data.main.temp_min + " °C"), 10, 8, 36);
+            g.DrawString(String.Format("{0}{1}", "max: ", data.main.temp_max + " °C"), 10, 8, 50);
+
+            g.DrawString(data.main.temp + " °C", 
+                new Font(Tools.family, 26, FontStyle.Bold), 
+                Tools.brush, 
+                weatherPanel.Width - 180, 
+                25);
+
+            if (city.LastImg != null)
+            {
+                using (MemoryStream ms = new MemoryStream(city.LastImg))
+                {
+                    Image img = Bitmap.FromStream(ms);
+                    Rectangle rct = new Rectangle(weatherPanel.Width - 100, 5, 95, 95);
+                    g.DrawImage(img, rct);
+                }
+            }
         }
     }
 }

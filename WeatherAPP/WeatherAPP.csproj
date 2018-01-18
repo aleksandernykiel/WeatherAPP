@@ -65,6 +65,7 @@
       <DependentUpon>ConfigForm.cs</DependentUpon>
     </Compile>
     <Compile Include="City.cs" />
+    <Compile Include="Tools.cs" />
     <Compile Include="WeatherForm.cs">
       <SubType>Form</SubType>
     </Compile>

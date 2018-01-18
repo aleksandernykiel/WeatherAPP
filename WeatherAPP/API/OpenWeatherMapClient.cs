@@ -24,6 +24,7 @@ namespace WeatherAPP.API
         {
             ParamCollection pars = new ParamCollection();
             pars.Add("q", city);
+            pars.Add("units", "metric");
             pars.Add("appid", appid);
 
             string content;
@@ -36,18 +37,17 @@ namespace WeatherAPP.API
             return content;
         }
 
-        public async Task<Stream> GetIcon(string code)
+        public async Task<byte[]> GetIcon(string code)
         {
-            Stream stream = null;
+            byte[] data = null;
             using(HttpClient client = new HttpClient())
             {
                 using (var resp = client.GetAsync($"http://openweathermap.org/img/w/{code}.png").Result)
                 {
-                    byte[] data = await resp.Content.ReadAsByteArrayAsync();
-                    stream = new MemoryStream(data);
+                    data = await resp.Content.ReadAsByteArrayAsync();
                 }
             }
-            return stream;
+            return data;
         }
 
         private class ParamCollection

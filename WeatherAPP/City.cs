@@ -15,6 +15,7 @@ namespace WeatherAPP
         public string ID { get; set; }
         public string Name { get; set; }
         public string LastWeatherJSON { get; set; }
+        public byte[] LastImg { get; set; }
         public DateTime LastCheck { get; set; }
 
         public void Update(string contentJson)

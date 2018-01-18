@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -40,14 +41,22 @@ namespace WeatherAPP
                 CityListItem item = new CityListItem(city);
 
                 string result = weatherData.Result;
-                JObject json = JObject.Parse(result);
+                WeatherData json = JsonConvert.DeserializeObject<WeatherData>(result);
 
-                if (json["cod"].ToString() == "200")
+                if (json.cod == "200")
                 {
-                    city.ID = json["id"].ToString();
+                    Task<byte[]> iconData = Task.Run<byte[]>(() =>
+                    {
+                        OpenWeatherMapClient client = new OpenWeatherMapClient();
+                        return client.GetIcon(json.weather[0].icon).Result;
+                    });
+
+                    city.ID = json.id;
                     city.Update(result);
                     Config.Instance.Cities.Add(city);
                     cityList.Items.Add(item);
+
+                    city.LastImg = iconData.Result;
                 }
                 else
                 {

@@ -110,6 +110,8 @@
             // 
             // weatherPanel
             // 
+            this.weatherPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.weatherPanel.Location = new System.Drawing.Point(13, 56);
             this.weatherPanel.Name = "weatherPanel";
             this.weatherPanel.Size = new System.Drawing.Size(400, 100);
