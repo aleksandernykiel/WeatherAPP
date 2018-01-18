@@ -64,6 +64,7 @@ namespace WeatherAPP
                 }
 
                 NewCity = "";
+                Config.Instance.Save();
             }
         }
 
@@ -73,6 +74,7 @@ namespace WeatherAPP
             cityList.Items.Remove(item);
 
             Config.Instance.Cities.Remove(item.City);
+            Config.Instance.Save();
         }
     }
 }
