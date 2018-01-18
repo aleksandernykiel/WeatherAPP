@@ -18,7 +18,15 @@ namespace WeatherAPP
         public WeatherForm()
         {
             InitializeComponent();
+            this.DoubleBuffered = true;
+            this.Paint += FirstPaint;
             LoadCities();
+        }
+
+        private void FirstPaint(object sender, PaintEventArgs e)
+        {
+            RedrawWeatherPanel(sender, e);
+            this.Paint -= FirstPaint;
         }
 
         private void WeatherForm_Load(object sender, EventArgs e)
@@ -94,6 +102,7 @@ namespace WeatherAPP
         {
             City city = (City)cityComboBox.SelectedItem;
 
+
             var g = weatherPanel.CreateGraphics();
             g.Clear(this.BackColor);
             
@@ -102,26 +111,32 @@ namespace WeatherAPP
             string info = city.Name;
             if (!String.IsNullOrEmpty(data.sys.country))
                 info += ", " + data.sys.country;
+            info += $" ({city.LastCheck.ToString()})";
 
-            g.DrawString(info, 16, 5, 5);
-            g.DrawString(String.Format("{0}{1}","min:  ", data.main.temp_min + " °C"), 10, 8, 36);
-            g.DrawString(String.Format("{0}{1}", "max: ", data.main.temp_max + " °C"), 10, 8, 50);
+            g.DrawString(info, 14, 5, 5);
+            g.DrawString(String.Format("{0}{1}","min:  ", data.main.temp_min + " °C"), 10, 8, 41);
+            g.DrawString(String.Format("{0}{1}", "max: ", data.main.temp_max + " °C"), 10, 8, 55);
 
             g.DrawString(data.main.temp + " °C", 
                 new Font(Tools.family, 26, FontStyle.Bold), 
                 Tools.brush, 
                 weatherPanel.Width - 180, 
-                25);
+                40);
 
             if (city.LastImg != null)
             {
                 using (MemoryStream ms = new MemoryStream(city.LastImg))
                 {
                     Image img = Bitmap.FromStream(ms);
-                    Rectangle rct = new Rectangle(weatherPanel.Width - 100, 5, 95, 95);
+                    Rectangle rct = new Rectangle(weatherPanel.Width - 100, 13, 95, 95);
                     g.DrawImage(img, rct);
                 }
             }
+        }
+
+        private void weatherPanel_Resize(object sender, EventArgs e)
+        {
+            RedrawWeatherPanel(sender, e);
         }
     }
 }

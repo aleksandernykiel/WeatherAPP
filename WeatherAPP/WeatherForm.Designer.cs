@@ -116,6 +116,7 @@
             this.weatherPanel.Name = "weatherPanel";
             this.weatherPanel.Size = new System.Drawing.Size(400, 100);
             this.weatherPanel.TabIndex = 2;
+            this.weatherPanel.Resize += new System.EventHandler(this.weatherPanel_Resize);
             // 
             // WeatherForm
             // 
