@@ -22,7 +22,7 @@ namespace WeatherAPP.API
             Client = new HttpClient();
         }
 
-        public async Task<JObject> GetWeather(string city)
+        public async Task<string> GetWeather(string city)
         {
             ParamCollection pars = new ParamCollection();
             pars.Add("q", city);
@@ -31,7 +31,7 @@ namespace WeatherAPP.API
             var response = await Client.GetAsync(url + "weather" + pars.GetParams());
             string content = await response.Content.ReadAsStringAsync();
 
-            return JObject.Parse(content);
+            return content;
         }
 
         private class ParamCollection

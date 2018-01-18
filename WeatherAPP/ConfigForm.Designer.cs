@@ -32,6 +32,8 @@
             this.cityBox = new System.Windows.Forms.TextBox();
             this.addButton = new System.Windows.Forms.Button();
             this.cityList = new System.Windows.Forms.ListView();
+            this.saveButton = new System.Windows.Forms.Button();
+            this.deleteCityBtn = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label1
@@ -65,21 +67,52 @@
             // 
             // cityList
             // 
+            this.cityList.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.cityList.FullRowSelect = true;
             this.cityList.Location = new System.Drawing.Point(12, 56);
+            this.cityList.MultiSelect = false;
             this.cityList.Name = "cityList";
             this.cityList.Size = new System.Drawing.Size(260, 304);
             this.cityList.TabIndex = 3;
             this.cityList.UseCompatibleStateImageBehavior = false;
+            this.cityList.View = System.Windows.Forms.View.List;
+            // 
+            // saveButton
+            // 
+            this.saveButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.saveButton.Location = new System.Drawing.Point(160, 366);
+            this.saveButton.Name = "saveButton";
+            this.saveButton.Size = new System.Drawing.Size(115, 23);
+            this.saveButton.TabIndex = 4;
+            this.saveButton.Text = "Zapisz";
+            this.saveButton.UseVisualStyleBackColor = true;
+            this.saveButton.Click += new System.EventHandler(this.saveButton_Click);
+            // 
+            // deleteCityBtn
+            // 
+            this.deleteCityBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.deleteCityBtn.Location = new System.Drawing.Point(12, 366);
+            this.deleteCityBtn.Name = "deleteCityBtn";
+            this.deleteCityBtn.Size = new System.Drawing.Size(75, 23);
+            this.deleteCityBtn.TabIndex = 5;
+            this.deleteCityBtn.Text = "Usuń miasto";
+            this.deleteCityBtn.UseVisualStyleBackColor = true;
+            this.deleteCityBtn.Click += new System.EventHandler(this.deleteCityBtn_Click);
             // 
             // ConfigForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 372);
+            this.ClientSize = new System.Drawing.Size(284, 393);
+            this.Controls.Add(this.deleteCityBtn);
+            this.Controls.Add(this.saveButton);
             this.Controls.Add(this.cityList);
             this.Controls.Add(this.addButton);
             this.Controls.Add(this.cityBox);
             this.Controls.Add(this.label1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
             this.Name = "ConfigForm";
             this.Text = "Weather APP - Konfiguracja";
             this.ResumeLayout(false);
@@ -93,5 +126,7 @@
         private System.Windows.Forms.TextBox cityBox;
         private System.Windows.Forms.Button addButton;
         private System.Windows.Forms.ListView cityList;
+        private System.Windows.Forms.Button saveButton;
+        private System.Windows.Forms.Button deleteCityBtn;
     }
 }

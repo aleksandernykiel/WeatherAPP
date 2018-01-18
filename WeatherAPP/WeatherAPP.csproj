@@ -49,6 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="API\OpenWeatherMapClient.cs" />
+    <Compile Include="CityListItem.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="ConfigForm.cs">
       <SubType>Form</SubType>

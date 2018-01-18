@@ -13,7 +13,7 @@ namespace WeatherAPP
     {
         private static Config _instance = null;
 
-        private static Config Instance
+        public static Config Instance
         {
             get
             {
@@ -29,7 +29,7 @@ namespace WeatherAPP
             }
         }
 
-        private static readonly string Location = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "WeatherAPP");
+        internal static readonly string Location = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "WeatherAPP");
         private static readonly string FileName = "config.xml";
         private static readonly XmlSerializer Serializer = new XmlSerializer(typeof(Config));
         private static string FilePath => Path.Combine(Location, FileName);
@@ -56,6 +56,6 @@ namespace WeatherAPP
             }
         }
 
-        public List<City> Miasta { get; set; } = new List<City>();
+        public List<City> Cities { get; set; } = new List<City>();
     }
 }

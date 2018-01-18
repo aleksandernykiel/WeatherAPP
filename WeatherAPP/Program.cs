@@ -14,6 +14,7 @@ namespace WeatherAPP
         [STAThread]
         static void Main()
         {
+            Config cfg = Config.Instance;   //inicjacja konfiguracji przy starcie programu
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new WeatherForm());
