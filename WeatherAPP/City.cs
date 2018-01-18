@@ -22,5 +22,10 @@ namespace WeatherAPP
             LastWeatherJSON = contentJson;
             LastCheck = DateTime.Now;
         }
+
+        public override string ToString()
+        {
+            return this.Name;
+        }
     }
 }

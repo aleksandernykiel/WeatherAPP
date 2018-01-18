@@ -20,13 +20,14 @@ namespace WeatherAPP
 
         private void WeatherForm_Load(object sender, EventArgs e)
         {
-
+            LoadCities();
         }
 
         private void ustawieniaToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ConfigForm conf = new ConfigForm();
             conf.ShowDialog();
+            LoadCities();
         }
 
         private void zamknijToolStripMenuItem_Click(object sender, EventArgs e)
@@ -46,6 +47,15 @@ namespace WeatherAPP
                 UseShellExecute = true
             };
             Process.Start(info);
+        }
+
+        private void LoadCities()
+        {
+            cityComboBox.Items.Clear();
+            foreach(City city in Config.Instance.Cities)
+            {
+                cityComboBox.Items.Add(city);
+            }
         }
     }
 }

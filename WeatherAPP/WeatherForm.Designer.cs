@@ -35,6 +35,7 @@
             this.zamknijToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.informacjeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.lokalizacjaKonfiguracjiToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.cityComboBox = new System.Windows.Forms.ComboBox();
             this.topMenu.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -84,7 +85,7 @@
             // informacjeToolStripMenuItem
             // 
             this.informacjeToolStripMenuItem.Name = "informacjeToolStripMenuItem";
-            this.informacjeToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.informacjeToolStripMenuItem.Size = new System.Drawing.Size(197, 22);
             this.informacjeToolStripMenuItem.Text = "Informacje";
             this.informacjeToolStripMenuItem.Click += new System.EventHandler(this.informacjeToolStripMenuItem_Click);
             // 
@@ -95,11 +96,22 @@
             this.lokalizacjaKonfiguracjiToolStripMenuItem.Text = "Lokalizacja konfiguracji";
             this.lokalizacjaKonfiguracjiToolStripMenuItem.Click += new System.EventHandler(this.lokalizacjaKonfiguracjiToolStripMenuItem_Click);
             // 
+            // cityComboBox
+            // 
+            this.cityComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.cityComboBox.FormattingEnabled = true;
+            this.cityComboBox.Location = new System.Drawing.Point(13, 28);
+            this.cityComboBox.Name = "cityComboBox";
+            this.cityComboBox.Size = new System.Drawing.Size(400, 21);
+            this.cityComboBox.TabIndex = 1;
+            // 
             // WeatherForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(425, 265);
+            this.Controls.Add(this.cityComboBox);
             this.Controls.Add(this.topMenu);
             this.MainMenuStrip = this.topMenu;
             this.Name = "WeatherForm";
@@ -121,6 +133,7 @@
         private System.Windows.Forms.ToolStripMenuItem zamknijToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem informacjeToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem lokalizacjaKonfiguracjiToolStripMenuItem;
+        private System.Windows.Forms.ComboBox cityComboBox;
     }
 }
 
