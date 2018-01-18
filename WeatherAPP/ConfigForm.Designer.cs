@@ -32,7 +32,6 @@
             this.cityBox = new System.Windows.Forms.TextBox();
             this.addButton = new System.Windows.Forms.Button();
             this.cityList = new System.Windows.Forms.ListView();
-            this.saveButton = new System.Windows.Forms.Button();
             this.deleteCityBtn = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
@@ -79,17 +78,6 @@
             this.cityList.UseCompatibleStateImageBehavior = false;
             this.cityList.View = System.Windows.Forms.View.List;
             // 
-            // saveButton
-            // 
-            this.saveButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.saveButton.Location = new System.Drawing.Point(160, 366);
-            this.saveButton.Name = "saveButton";
-            this.saveButton.Size = new System.Drawing.Size(115, 23);
-            this.saveButton.TabIndex = 4;
-            this.saveButton.Text = "Zapisz";
-            this.saveButton.UseVisualStyleBackColor = true;
-            this.saveButton.Click += new System.EventHandler(this.saveButton_Click);
-            // 
             // deleteCityBtn
             // 
             this.deleteCityBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
@@ -107,7 +95,6 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(284, 393);
             this.Controls.Add(this.deleteCityBtn);
-            this.Controls.Add(this.saveButton);
             this.Controls.Add(this.cityList);
             this.Controls.Add(this.addButton);
             this.Controls.Add(this.cityBox);
@@ -126,7 +113,6 @@
         private System.Windows.Forms.TextBox cityBox;
         private System.Windows.Forms.Button addButton;
         private System.Windows.Forms.ListView cityList;
-        private System.Windows.Forms.Button saveButton;
         private System.Windows.Forms.Button deleteCityBtn;
     }
 }

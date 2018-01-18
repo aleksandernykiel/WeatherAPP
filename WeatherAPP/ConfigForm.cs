@@ -67,12 +67,6 @@ namespace WeatherAPP
             }
         }
 
-        private void saveButton_Click(object sender, EventArgs e)
-        {
-            Config.SaveAsync();
-            this.Close();
-        }
-
         private void deleteCityBtn_Click(object sender, EventArgs e)
         {
             var item = (CityListItem)cityList.FocusedItem;
