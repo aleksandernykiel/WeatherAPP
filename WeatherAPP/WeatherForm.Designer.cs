@@ -36,6 +36,7 @@
             this.informacjeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.lokalizacjaKonfiguracjiToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cityComboBox = new System.Windows.Forms.ComboBox();
+            this.weatherPanel = new System.Windows.Forms.Panel();
             this.topMenu.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -105,12 +106,21 @@
             this.cityComboBox.Name = "cityComboBox";
             this.cityComboBox.Size = new System.Drawing.Size(400, 21);
             this.cityComboBox.TabIndex = 1;
+            this.cityComboBox.SelectedIndexChanged += new System.EventHandler(this.cityComboBox_SelectedIndexChanged);
+            // 
+            // weatherPanel
+            // 
+            this.weatherPanel.Location = new System.Drawing.Point(13, 56);
+            this.weatherPanel.Name = "weatherPanel";
+            this.weatherPanel.Size = new System.Drawing.Size(400, 100);
+            this.weatherPanel.TabIndex = 2;
             // 
             // WeatherForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(425, 265);
+            this.ClientSize = new System.Drawing.Size(425, 317);
+            this.Controls.Add(this.weatherPanel);
             this.Controls.Add(this.cityComboBox);
             this.Controls.Add(this.topMenu);
             this.MainMenuStrip = this.topMenu;
@@ -134,6 +144,7 @@
         private System.Windows.Forms.ToolStripMenuItem informacjeToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem lokalizacjaKonfiguracjiToolStripMenuItem;
         private System.Windows.Forms.ComboBox cityComboBox;
+        private System.Windows.Forms.Panel weatherPanel;
     }
 }
 

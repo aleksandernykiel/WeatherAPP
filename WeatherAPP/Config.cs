@@ -29,10 +29,16 @@ namespace WeatherAPP
             }
         }
 
+        public static void SaveAsync()
+        {
+            Task.Run(() => Instance.Save());
+        }
+
         internal static readonly string Location = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "WeatherAPP");
         private static readonly string FileName = "config.xml";
         private static readonly XmlSerializer Serializer = new XmlSerializer(typeof(Config));
         private static string FilePath => Path.Combine(Location, FileName);
+        private static readonly object obj = new object();
 
         private Config()
         {
@@ -42,20 +48,27 @@ namespace WeatherAPP
 
         private static void Load()
         {
-            using(StreamReader sr = new StreamReader(FilePath, Encoding.UTF8))
+            lock (obj)
             {
-                _instance = (Config)Serializer.Deserialize(sr);
+                using (StreamReader sr = new StreamReader(FilePath, Encoding.UTF8))
+                {
+                    _instance = (Config)Serializer.Deserialize(sr);
+                }
             }
         }
 
         public void Save()
         {
-            using(StreamWriter sw = new StreamWriter(FilePath, false, Encoding.UTF8))
+            lock (obj)
             {
-                Serializer.Serialize(sw, this);
+                using (StreamWriter sw = new StreamWriter(FilePath, false, Encoding.UTF8))
+                {
+                    Serializer.Serialize(sw, this);
+                }
             }
         }
 
         public List<City> Cities { get; set; } = new List<City>();
+        public string SelectedCity { get; set; }
     }
 }

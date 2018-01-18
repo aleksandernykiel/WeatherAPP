@@ -48,7 +48,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="API\Clouds.cs" />
+    <Compile Include="API\Coord.cs" />
+    <Compile Include="API\Main.cs" />
     <Compile Include="API\OpenWeatherMapClient.cs" />
+    <Compile Include="API\Sys.cs" />
+    <Compile Include="API\Weather.cs" />
+    <Compile Include="API\WeatherData.cs" />
+    <Compile Include="API\Wind.cs" />
     <Compile Include="CityListItem.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="ConfigForm.cs">

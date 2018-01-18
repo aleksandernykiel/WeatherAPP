@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System.IO;
 
 namespace WeatherAPP.API
 {
@@ -15,11 +16,8 @@ namespace WeatherAPP.API
         const string WEATHER = "weather";
         readonly string appid = "ae78d7cfa88486ea307352b6595c18d6";
 
-        private HttpClient Client;
-
         public OpenWeatherMapClient()
         {
-            Client = new HttpClient();
         }
 
         public async Task<string> GetWeather(string city)
@@ -28,10 +26,28 @@ namespace WeatherAPP.API
             pars.Add("q", city);
             pars.Add("appid", appid);
 
-            var response = await Client.GetAsync(url + "weather" + pars.GetParams());
-            string content = await response.Content.ReadAsStringAsync();
+            string content;
+
+            using (HttpClient Client = new HttpClient())
+            {
+                content = await Client.GetStringAsync(url + "weather" + pars.GetParams());
+            }
 
             return content;
+        }
+
+        public async Task<Stream> GetIcon(string code)
+        {
+            Stream stream = null;
+            using(HttpClient client = new HttpClient())
+            {
+                using (var resp = client.GetAsync($"http://openweathermap.org/img/w/{code}.png").Result)
+                {
+                    byte[] data = await resp.Content.ReadAsByteArrayAsync();
+                    stream = new MemoryStream(data);
+                }
+            }
+            return stream;
         }
 
         private class ParamCollection

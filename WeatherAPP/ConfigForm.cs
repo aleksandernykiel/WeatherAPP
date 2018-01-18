@@ -60,7 +60,7 @@ namespace WeatherAPP
 
         private void saveButton_Click(object sender, EventArgs e)
         {
-            Task.Run(() => Config.Instance.Save());
+            Config.SaveAsync();
             this.Close();
         }
 
