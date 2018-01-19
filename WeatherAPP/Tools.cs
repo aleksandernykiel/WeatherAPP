@@ -16,5 +16,13 @@ namespace WeatherAPP
         {
             g.DrawString(str, new Font(family, size), brush, x, y);
         }
+
+        public static DateTime UnixTSToDateTime(this double unixTimeStamp)
+        {
+            System.DateTime dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
+            dtDateTime = dtDateTime.AddSeconds(unixTimeStamp).ToLocalTime();
+            return dtDateTime;
+        }
+
     }
 }

@@ -101,13 +101,27 @@ namespace WeatherAPP
         private void RedrawWeatherPanel(object sender, EventArgs e)
         {
             City city = (City)cityComboBox.SelectedItem;
+            if (city == null) return;
 
+            WeatherData data = Newtonsoft.Json.JsonConvert.DeserializeObject<WeatherData>(city.LastWeatherJSON);
+
+            label1.Visible = true;
+            label3.Visible = true;
+            label4.Visible = true;
+            label5.Visible = true;
+            label6.Visible = true;
+            label8.Visible = true;
+
+            wspolrzedneLabel.Text = data.coord.lat + ", " + data.coord.lon;
+            cisnienieLabel.Text = data.main.pressure + " hPa";
+            wilgotnoscLabel.Text = data.main.humidity + " %";
+            wiatrLabel.Text = data.wind.speed + " m/s";
+            wschodLabel.Text = double.Parse(data.sys.sunrise).UnixTSToDateTime().ToString("HH:mm");
+            zachodLabel.Text = double.Parse(data.sys.sunset).UnixTSToDateTime().ToString("HH:mm");
 
             var g = weatherPanel.CreateGraphics();
             g.Clear(this.BackColor);
-            
 
-            WeatherData data = Newtonsoft.Json.JsonConvert.DeserializeObject<WeatherData>(city.LastWeatherJSON);
             string info = city.Name;
             if (!String.IsNullOrEmpty(data.sys.country))
                 info += ", " + data.sys.country;
