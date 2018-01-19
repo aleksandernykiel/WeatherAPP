@@ -31,6 +31,12 @@ namespace WeatherAPP
 
         private void addButton_Click(object sender, EventArgs e)
         {
+            if(!String.IsNullOrEmpty(NewCity) && Config.Instance.Cities.Where(x => x.Name.ToLower() == NewCity.ToLower()).Count() > 0)
+            {
+                MessageBox.Show("To miasto jest już na liście.");
+                return;
+            }
+
             if (!String.IsNullOrEmpty(NewCity))
             {
                 try
