@@ -15,12 +15,55 @@ namespace WeatherAPP
 {
     public partial class WeatherForm : Form
     {
+
+
         public WeatherForm()
         {
             InitializeComponent();
             this.DoubleBuffered = true;
             this.Paint += FirstPaint;
             LoadCities();
+
+            Tools.StartTimer(TimerElapsed);
+            this.FormClosing += WeatherForm_FormClosing;
+
+            Task.Run(() =>
+            {
+                while (!this.IsHandleCreated) { }
+                TimerElapsed(null, null);
+            });
+        }
+
+        private void WeatherForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Tools.StopTimer();
+        }
+
+        private void TimerElapsed(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            foreach(City city in Config.Instance.Cities)
+            {
+                object loc = new object();
+                int tasks = 0;
+                if(city.LastCheck.AddMinutes(10) <= DateTime.Now)
+                {
+                    lock (loc)
+                    {
+                        tasks++;
+                    }
+                    Task.Run(() => {
+                        city.RefreshData();
+                        lock (loc)
+                        {
+                            tasks--;
+                        }
+                    });
+                }
+            }
+
+            Config.Instance.Save();
+            //timer pracuje w osobnym wątku, więc odwołania do UI należy odpowiednio wywołać
+            this.Invoke((MethodInvoker)delegate { this.RedrawWeatherPanel(null, EventArgs.Empty); this.OnPaint(null); }); 
         }
 
         private void FirstPaint(object sender, PaintEventArgs e)
