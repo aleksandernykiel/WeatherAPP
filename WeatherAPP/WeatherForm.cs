@@ -15,7 +15,7 @@ namespace WeatherAPP
 {
     public partial class WeatherForm : Form
     {
-
+        int updateMinutes = 10;
 
         public WeatherForm()
         {
@@ -41,29 +41,35 @@ namespace WeatherAPP
 
         private void TimerElapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
-            foreach(City city in Config.Instance.Cities)
+            Task.Run(() =>
             {
-                object loc = new object();
-                int tasks = 0;
-                if(city.LastCheck.AddMinutes(10) <= DateTime.Now)
-                {
-                    lock (loc)
-                    {
-                        tasks++;
-                    }
-                    Task.Run(() => {
-                        city.RefreshData();
-                        lock (loc)
-                        {
-                            tasks--;
-                        }
-                    });
-                }
-            }
+                this.Invoke((MethodInvoker)delegate { this.waitPanel.Visible = true; });
 
-            Config.Instance.Save();
-            //timer pracuje w osobnym wątku, więc odwołania do UI należy odpowiednio wywołać
-            this.Invoke((MethodInvoker)delegate { this.RedrawWeatherPanel(null, EventArgs.Empty); this.OnPaint(null); }); 
+                foreach (City city in Config.Instance.Cities)
+                {
+                    object loc = new object();
+                    if (city.LastCheck.AddMinutes(updateMinutes) <= DateTime.Now)
+                    {
+                        city.RefreshData();
+                    }
+                }
+
+                lock (Config.Instance)
+                {
+                    Config.Instance.Save();
+                }
+
+                updateMinutes = 10;
+
+                //timer pracuje w osobnym wątku, więc odwołania do UI należy odpowiednio wywołać
+                this.Invoke((MethodInvoker)delegate
+                {
+                    LoadCities();
+                    this.RedrawWeatherPanel(null, EventArgs.Empty);
+                    this.waitPanel.Visible = false;
+                    this.OnPaint(null);
+                });
+            });
         }
 
         private void FirstPaint(object sender, PaintEventArgs e)
@@ -166,7 +172,7 @@ namespace WeatherAPP
             g.Clear(this.BackColor);
 
             string info = city.Name;
-            if (!String.IsNullOrEmpty(data.sys.country))
+            if (!String.IsNullOrEmpty(data.sys.country) && !info.Contains(data.sys.country))
                 info += ", " + data.sys.country;
             info += $" ({city.LastCheck.ToString()})";
 
@@ -174,7 +180,7 @@ namespace WeatherAPP
             g.DrawString(String.Format("{0}{1}","min:  ", data.main.temp_min + " °C"), 10, 8, 41);
             g.DrawString(String.Format("{0}{1}", "max: ", data.main.temp_max + " °C"), 10, 8, 55);
 
-            g.DrawString(data.main.temp + " °C", 
+            g.DrawString((int)double.Parse(data.main.temp, System.Globalization.CultureInfo.InvariantCulture) + " °C", 
                 new Font(Tools.family, 26, FontStyle.Bold), 
                 Tools.brush, 
                 weatherPanel.Width - 180, 
@@ -194,6 +200,14 @@ namespace WeatherAPP
         private void weatherPanel_Resize(object sender, EventArgs e)
         {
             RedrawWeatherPanel(sender, e);
+        }
+
+        private void odświeżToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Tools.StopTimer();
+            updateMinutes = 0;
+            TimerElapsed(sender, null);
+            Tools.StartTimer();
         }
     }
 }

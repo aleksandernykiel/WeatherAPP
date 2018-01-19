@@ -31,7 +31,10 @@ namespace WeatherAPP.API
 
             using (HttpClient Client = new HttpClient())
             {
-                content = await Client.GetStringAsync(url + "weather" + pars.GetParams());
+                using(var resp = Client.GetAsync(url + "weather" + pars.GetParams()).Result)
+                {
+                    content = await resp.Content.ReadAsStringAsync();
+                }
             }
 
             return content;

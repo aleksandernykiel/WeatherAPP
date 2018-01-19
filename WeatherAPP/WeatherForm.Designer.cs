@@ -28,8 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(WeatherForm));
             this.topMenu = new System.Windows.Forms.MenuStrip();
             this.aplikacjaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.odświeżToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ustawieniaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.zamknijToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pomocToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -49,6 +51,7 @@
             this.label6 = new System.Windows.Forms.Label();
             this.wschodLabel = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
+            this.waitPanel = new System.Windows.Forms.Panel();
             this.topMenu.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -66,11 +69,19 @@
             // aplikacjaToolStripMenuItem
             // 
             this.aplikacjaToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.odświeżToolStripMenuItem,
             this.ustawieniaToolStripMenuItem,
             this.zamknijToolStripMenuItem});
             this.aplikacjaToolStripMenuItem.Name = "aplikacjaToolStripMenuItem";
             this.aplikacjaToolStripMenuItem.Size = new System.Drawing.Size(67, 20);
             this.aplikacjaToolStripMenuItem.Text = "Aplikacja";
+            // 
+            // odświeżToolStripMenuItem
+            // 
+            this.odświeżToolStripMenuItem.Name = "odświeżToolStripMenuItem";
+            this.odświeżToolStripMenuItem.Size = new System.Drawing.Size(131, 22);
+            this.odświeżToolStripMenuItem.Text = "Odśwież";
+            this.odświeżToolStripMenuItem.Click += new System.EventHandler(this.odświeżToolStripMenuItem_Click);
             // 
             // ustawieniaToolStripMenuItem
             // 
@@ -244,11 +255,23 @@
             this.label8.Text = "Wschód:";
             this.label8.Visible = false;
             // 
+            // waitPanel
+            // 
+            this.waitPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.waitPanel.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("waitPanel.BackgroundImage")));
+            this.waitPanel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.waitPanel.Location = new System.Drawing.Point(378, 186);
+            this.waitPanel.Name = "waitPanel";
+            this.waitPanel.Size = new System.Drawing.Size(34, 28);
+            this.waitPanel.TabIndex = 15;
+            this.waitPanel.Visible = false;
+            // 
             // WeatherForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(424, 316);
+            this.ClientSize = new System.Drawing.Size(424, 226);
+            this.Controls.Add(this.waitPanel);
             this.Controls.Add(this.zachodLabel);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.wschodLabel);
@@ -264,8 +287,9 @@
             this.Controls.Add(this.weatherPanel);
             this.Controls.Add(this.cityComboBox);
             this.Controls.Add(this.topMenu);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.topMenu;
-            this.MinimumSize = new System.Drawing.Size(440, 355);
+            this.MinimumSize = new System.Drawing.Size(440, 265);
             this.Name = "WeatherForm";
             this.Text = "Weather APP";
             this.Load += new System.EventHandler(this.WeatherForm_Load);
@@ -299,6 +323,8 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label wschodLabel;
         private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.ToolStripMenuItem odświeżToolStripMenuItem;
+        private System.Windows.Forms.Panel waitPanel;
     }
 }
 

@@ -6,6 +6,8 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -31,40 +33,65 @@ namespace WeatherAPP
         {
             if (!String.IsNullOrEmpty(NewCity))
             {
-                Task<string> weatherData = Task.Run<string>(async() =>
+                try
                 {
-                    OpenWeatherMapClient client = new OpenWeatherMapClient();
-                    return await client.GetWeather(NewCity);
-                });
-
-                City city = new City(NewCity);
-                CityListItem item = new CityListItem(city);
-
-                string result = weatherData.Result;
-                WeatherData json = JsonConvert.DeserializeObject<WeatherData>(result);
-
-                if (json.cod == "200")
-                {
-                    Task<byte[]> iconData = Task.Run<byte[]>(() =>
+                    Task<string> weatherData = Task.Run<string>(async () =>
                     {
                         OpenWeatherMapClient client = new OpenWeatherMapClient();
-                        return client.GetIcon(json.weather[0].icon).Result;
+                        return await client.GetWeather(NewCity);
                     });
 
-                    city.ID = json.id;
-                    city.Update(result);
-                    Config.Instance.Cities.Add(city);
-                    cityList.Items.Add(item);
+                    City city = new City(NewCity);
+                    CityListItem item = new CityListItem(city);
 
-                    city.LastImg = iconData.Result;
+                    string result = weatherData.Result;
+                    WeatherData json = JsonConvert.DeserializeObject<WeatherData>(result);
+
+                    if (json.cod == "200")
+                    {
+                        Task<byte[]> iconData = Task.Run<byte[]>(() =>
+                        {
+                            OpenWeatherMapClient client = new OpenWeatherMapClient();
+                            return client.GetIcon(json.weather[0].icon).Result;
+                        });
+
+                        city.ID = json.id;
+                        city.Update(result);
+                        Config.Instance.Cities.Add(city);
+                        cityList.Items.Add(item);
+
+                        city.LastImg = iconData.Result;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Nie znaleziono miasta.");
+                    }
+
+                    NewCity = "";
+                    Config.Instance.Save();
+
                 }
-                else
+                catch (AggregateException aEx)
                 {
-                    MessageBox.Show("Nie znaleziono miasta.");
-                }
+                    Exception tmp = aEx;
+                    while(tmp is AggregateException)
+                    {
+                        tmp = tmp.InnerException;
+                    }
 
-                NewCity = "";
-                Config.Instance.Save();
+                    if (tmp is HttpRequestException)
+                    {
+                        MessageBox.Show("Problem komunikacji z API. \n" + tmp.Message);
+                    }
+                    else
+                    {
+                        throw tmp;
+                    }
+                }
+                catch(HttpRequestException reqEx)
+                {
+                    MessageBox.Show("Problem komunikacji z API. \n" + reqEx.Message);
+                }
             }
         }
 
@@ -75,6 +102,12 @@ namespace WeatherAPP
 
             Config.Instance.Cities.Remove(item.City);
             Config.Instance.Save();
+        }
+
+        private void deleteCityBtn_MouseHover(object sender, EventArgs e)
+        {
+            ToolTip tip = new ToolTip();
+            tip.SetToolTip(deleteCityBtn, deleteCityBtn.Tag.ToString());
         }
     }
 }

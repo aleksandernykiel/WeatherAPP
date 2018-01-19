@@ -2,8 +2,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using WeatherAPP.API;
 
 namespace WeatherAPP
@@ -26,22 +28,45 @@ namespace WeatherAPP
             LastCheck = DateTime.Now;
         }
 
-        public async void RefreshData()
+        public void RefreshData()
         {
-            OpenWeatherMapClient client = new OpenWeatherMapClient();
-            string result = await client.GetWeather(this.Name);
-
-            WeatherData json = JsonConvert.DeserializeObject<WeatherData>(result);
-
-            if (json.cod == "200")
+            try
             {
-                Task<byte[]> iconData = Task.Run<byte[]>(() =>
+                lock (this)
                 {
-                    return client.GetIcon(json.weather[0].icon).Result;
-                });
+                    OpenWeatherMapClient client = new OpenWeatherMapClient();
+                    string result = client.GetWeather(this.Name).Result;
 
-                this.Update(result);
-                this.LastImg = iconData.Result;
+                    WeatherData json = JsonConvert.DeserializeObject<WeatherData>(result);
+
+                    if (json.cod == "200")
+                    {
+                        Task<byte[]> iconData = Task.Run<byte[]>(() =>
+                        {
+                            return client.GetIcon(json.weather[0].icon).Result;
+                        });
+
+                        this.Update(result);
+                        this.LastImg = iconData.Result;
+                    }
+                }
+            }
+            catch (AggregateException aEx)
+            {
+                Exception tmp = aEx;
+                while (tmp is AggregateException)
+                {
+                    tmp = tmp.InnerException;
+                }
+
+                if (tmp is HttpRequestException)
+                {
+                    MessageBox.Show("Problem komunikacji z API. \n" + tmp.Message);
+                }
+                else
+                {
+                    throw tmp;
+                }
             }
         }
 
