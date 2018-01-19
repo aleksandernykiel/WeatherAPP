@@ -97,7 +97,17 @@ namespace WeatherAPP
 
         private void informacjeToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            //TODO: messagebox z informacjami o aplikacji
+            string text = "Weather APP\n" +
+                "Autor: Aleksander Nykiel\n" +
+                "Kontakt: nykiel.aleksander@gmail.com\n\n" +
+                "Opis aplikacji:\n" +
+                "Niniejsza aplikacja służy do pobierania aktualnych danych pogodowych z serwisu \"OpenWeatherMap\".\n" +
+                "Dodaj swoje miasta w ustawieniach, aby móc śledzić dla nich pogodę.\n\n" +
+                "W konfiguracji podajemy nazwę miasta. \n" +
+                "Jeśli znalezione miasto nie jest tym, którego szukasz - inny kraj, podaj kod kraju po przecinku\n\n" +
+                "np. \"Bali, CN\"";
+
+            MessageBox.Show(text);
         }
 
         private void lokalizacjaKonfiguracjiToolStripMenuItem_Click(object sender, EventArgs e)
